@@ -1,0 +1,56 @@
+    body {
+      font-family: Georgia, Arial, sans-serif;
+      background:#fff;
+      width:800px;
+      height: 675px;
+      margin:45px auto;
+      padding: 10px;
+      overflow: hidden;
+    }
+    div {
+      padding: 10px;
+      border-bottom: 1px dashed #ccc;
+      background-color: white;
+    }
+
+    h3 {
+      text-transform: uppercase;
+      color: white;
+      text-align: center;
+    }
+
+    #mainPart {
+      background:#ccc;
+      float: right;
+      width: 600px;
+    }
+
+    #button {
+      background: #fff;
+      height: 150px;
+      width: 150px;
+      float: left;
+      border-bottom: none;
+    }
+
+    #userPage {
+      background: #82B22C;
+      margin-left: 10px;
+      width: 700px;
+    }
+
+    input {
+      margin: -30px -50px; 
+      position:relative;
+      top:25%; 
+      left:50%;
+      padding: 2px;
+      height: 40px;
+      font-family: Georgia, Arial, sans-serif;
+    }
+
+    img {
+      height: 50px;
+      width: 158px;
+    }
+

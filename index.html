@@ -3,57 +3,71 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
-    <style type="text/css">
-    body {
-      font-family: Georgia, Arial, sans-serif;
-      background:#fff;
-      width:700px;
-      height: 675px;
-      margin:45px auto;
-      border:1px solid #000;
-      padding: 10px;
-    }
-    div {
-      padding: 10px;
-      border-bottom: 1px dashed #ccc;
-      background-color: white;
-    }
-    input {
-      margin: -20px -50px; 
-      position:relative;
-      top:50%; 
-      left:50%;
-      padding: 10px;
-    }
-    </style>
+    <script src="moment-with-langs.js"></script>
+    <link rel="stylesheet" type="text/css" href="main.css">
   </head>
   <body>
     <script>
       $(document).ready(function(){
+
         var $body = $('body');
         $body.html('');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
+        var $div = document.createElement("div");
+        $div.id="mainPart";
+        $body.append($div);
+  
+  
+        function getTweets(){
+          var index = streams.home.length - 1;
+          while(index >= 0){
+             getTweet(index);
+             index -= 1; }
+        }
+
+        function getTweet(index) {
           var tweet = streams.home[index];
           var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message + " Created at: " + tweet.created_at);
-          $tweet.appendTo($body);
-          index -= 1;
+          $tweet.html('@'+"<span id='user'>"+"<b>"+tweet.user+"</b>"+"</span>"+': '+tweet.message+"<br>"+"<em>"+" Created at: "+moment(tweet.created_at).format('MMMM Do YYYY, h:mm a'));
+          $tweet.prependTo($("#mainPart"));
+
+          $("#user").on("click", function() {
+            getUser(tweet.user);
+          });
         }
-        
-        $body.append("<br>");
-        $body.append("<input type='button' value='Newer tweets''>");
+
+        getTweets();
+
+        var $div = document.createElement("div");
+        $div.id="button";
+        $("#mainPart").before($div);  
+        $("#button").append("<input type='button' value='Newer tweets''>");  
+        $("#button").append("<img src='twittler.png'>");
 
         $("input").on("click", function(){
-          var tweet = streams.home[streams.home.length-1];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message + " Created at: " + tweet.created_at);
-          $tweet.appendTo($body);
+          getTweet(streams.home.length-1);
         });
 
-      });
+      function getUser(user){
+          $("#mainPart").remove();
+          $("#button").remove();
+          var $div = document.createElement("div");
+          $div.id="userPage";
+          $body.append($div);
+          var userTweet = streams.users[user];          
+          $("#userPage").append("<h3>"+ user +"</h3>");
 
+          var $tweetHolder = $('<div></div>');
+          for(var i=0; i<userTweet.length; i++){
+            $("div").data(userTweet[i]);
+            $tweetHolder.html("<b>" + $("div").data("user") +": " + "</b>" +$("div").data("message") + "<br>" + "<em>" +" Created at: " + moment($("div").data("created_at")).format('MMMM Do YYYY, h:mm a'));
+            console.log($("div").data("user") +": "+$("div").data("message") + " Created at: " + moment($("div").data("created_at")).format('MMMM Do YYYY, h:mm a'));
+            $tweetHolder.appendTo($("div"));
+            //document.getElementById("mainPart").innerHTML=('@' + "<span id='user'>" + "<b>" + streams.users[user][i].user + "</b>" +"</span>" + ': ' + streams.users[user][i].message + "<br>"+  "<em>" +" Created at: " + moment(streams.users[user][i].created_at).format('MMMM Do YYYY, h:mm a'));
+          }
+        }
+
+      });
     </script>
   </body>
 </html>
